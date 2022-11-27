@@ -8,6 +8,9 @@ public class CastleController : MonoBehaviour
     [SerializeField] private bool isEnemy = true;
     public bool IsEnemy => isEnemy;
 
+    [SerializeField] private int currentMoney = 1000;
+    public int CurrentMoney => currentMoney;
+
     [Header("Connect Settings")]
     [SerializeField] private bool isPlayerInteractable = false;
     public bool IsPlayerInteractable => isPlayerInteractable;
@@ -31,7 +34,6 @@ public class CastleController : MonoBehaviour
             castleUI.Initialization(this);
     }
 
-    public int currentMoney = 1000;
     public bool CheckMoneyWithdrawal(int value)
     {
         return currentMoney - value > 0;

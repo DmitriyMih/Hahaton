@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
-[RequireComponent(typeof(CanvasGroup))]
 public class CastleUI : MonoBehaviour
 {
     [SerializeField] private Canvas canvas;
@@ -17,7 +17,7 @@ public class CastleUI : MonoBehaviour
     [SerializeField] private bool processing = false;
 
     [Header("Main Settings")]
-    [SerializeField] private Transform objectOnMap;
+    [SerializeField] private CastleController castleController;
     [SerializeField] private Image debugImage;
 
     [SerializeField] private List<CastleUiItem> uiItems = new List<CastleUiItem>();
@@ -26,14 +26,23 @@ public class CastleUI : MonoBehaviour
     [SerializeField] private float offcetYCoefficient = 0.5f;
     [SerializeField] private float dampingValueDifference = 0.2f;
 
+    [Header("Money View Settings")]
+    [SerializeField] private TextMeshProUGUI moneyText;
+
+    [Header("HP Bar Settings")]
+    [SerializeField] private CanvasGroup hpBarGroup;
+    [SerializeField] private Image hpFill;
+
     public void Initialization(CastleController currentCastle)
     {
-        objectOnMap = currentCastle.transform;
+        castleController = currentCastle;
         openState = false;
 
-        canvasGroup = GetComponent<CanvasGroup>();
-        canvasGroup.alpha = 0;
-        canvasGroup.interactable = openState;
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = 0;
+            canvasGroup.interactable = openState;
+        }
 
         for (int i = 0; i < uiItems.Count; i++)
         {
@@ -54,12 +63,12 @@ public class CastleUI : MonoBehaviour
     [ContextMenu("Debug On Screen")]
     private void DebugOnScreen()
     {
-        if (objectOnMap == null || debugImage == null)
+        if (castleController == null || debugImage == null)
             return;
 
         RectTransform CanvasRect = canvas.GetComponent<RectTransform>();
 
-        Vector2 ViewportPosition = Camera.main.WorldToViewportPoint(objectOnMap.transform.position);
+        Vector2 ViewportPosition = Camera.main.WorldToViewportPoint(castleController.transform.position);
         Vector2 WorldObject_ScreenPosition = new Vector2(
         ((ViewportPosition.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f)),
         ((ViewportPosition.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f)));
@@ -67,31 +76,24 @@ public class CastleUI : MonoBehaviour
         debugImage.rectTransform.anchoredPosition = WorldObject_ScreenPosition;
     }
 
+    private int tempMoney = -1;
+
     private void Update()
     {
         if (openState)
             DebugOnScreen();
+
+        if (castleController != null)
+            if (castleController.CurrentMoney != tempMoney)
+                UpdateMoney();
     }
 
-    [ContextMenu("Place In Group")]
-    private void PlaceImageInGroup()
+    private void UpdateMoney()
     {
-        if (uiItems.Count == 0)
+        if (moneyText == null)
             return;
 
-        for (int i = 0; i < uiItems.Count; i++)
-        {
-            uiItems[i].transform.localPosition = Vector2.zero;
-        }
-
-        for (int i = -1; i < uiItems.Count - 1; i++)
-        {
-            int index = i + 1;
-            float offcetY = (i == -1 || i == uiItems.Count - 2) ? offcetYCoefficient : 0f;
-
-            Vector3 newPosition = new Vector3(i * offcet.x, offcet.y - offcet.y * offcetY, 0);
-            uiItems[index].transform.DOLocalMove(newPosition, openTime);
-        }
+        moneyText.text = castleController.CurrentMoney.ToString();
     }
 
     private IEnumerator SetGroupState(bool isState)
@@ -100,10 +102,15 @@ public class CastleUI : MonoBehaviour
         openState = isState;
 
         float time = isState ? openTime : closedTime;
-        float newValue = isState ? 1f : 0f;
+        float buttonsAlphaValue = isState ? 1f : 0f;
 
         if (canvasGroup != null)
-            canvasGroup.DOFade(newValue, time - 0.25f);
+            canvasGroup.DOFade(buttonsAlphaValue, time - 0.25f);
+
+        float hpBarAlphaValue = isState ? 0f : 1f;
+
+        if (hpBarGroup != null)
+            hpBarGroup.DOFade(hpBarAlphaValue, time - 0.25f);
 
         if (uiItems.Count != 0)
         {
