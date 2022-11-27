@@ -28,7 +28,7 @@ public class CastleUiItem : MonoBehaviour
         if (!castleController.CheckMoneyWithdrawal(unit.cost))
             return;
 
-        if (castleController.CreateUnit(unit.unitPrefab))
+        if (castleController.CheckCreateList(unit))
             castleController.WriteOffMoney(unit.cost);
     }
 }

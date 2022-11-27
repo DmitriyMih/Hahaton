@@ -34,8 +34,6 @@ public class CastleUI : MonoBehaviour
     [Header("HP Bar Settings")]
     [SerializeField] private CanvasGroup hpBarGroup;
     [SerializeField] private Image hpFill;
-    [SerializeField] private Color playerColor = new Color(76f / 255f, 129f / 255f, 237f / 255f, 255f / 255f);
-    [SerializeField] private Color enemyColor = new Color(237f / 255f, 76f / 255f, 76f / 255f, 255f / 255f);
     private int tempMoney = -1;
 
     public void Initialization(CastleController currentCastle)
@@ -50,16 +48,17 @@ public class CastleUI : MonoBehaviour
         }
 
         for (int i = 0; i < uiItems.Count; i++)
-        {
             uiItems[i].InititializationButton(currentCastle);
-        }
 
         if (castleController != null)
         {
+            if (hpFill != null)
+                hpFill.color = castleController.IsEnemy ? castleController.EnemyColor : castleController.PlayerColor;
+
             if (moneyGroup != null)
             {
                 moneyGroup.alpha = 0f;
-             
+
                 if (!castleController.IsEnemy)
                     moneyGroup.DOFade(1f, openTime);
             }
@@ -90,7 +89,6 @@ public class CastleUI : MonoBehaviour
 
         debugImage.rectTransform.anchoredPosition = WorldObject_ScreenPosition;
     }
-
 
     private void Update()
     {
@@ -125,13 +123,22 @@ public class CastleUI : MonoBehaviour
         float hpBarAlphaValue = isState ? 0f : 1f;
         float time = isState ? openTime : closedTime;
 
-        tempHp = castleController.CurrentHp;
+        float fillCoef = 1f / castleController.MaxHp;
 
-        if (hpBarGroup != null)
+        if (hpBarGroup != null && hpFill != null)
             if (castleController.CurrentHp != castleController.MaxHp)
+            {
                 hpBarGroup.DOFade(hpBarAlphaValue, time - 0.25f);
+                hpFill.DOFillAmount(castleController.CurrentHp * fillCoef, time - 0.25f);
+                Debug.Log("HP - " + hpFill.fillAmount);
+            }
             else
+            {
                 hpBarGroup.alpha = 0f;
+                hpFill.fillAmount = castleController.CurrentHp;
+            }
+
+        tempHp = castleController.CurrentHp;
     }
 
     private IEnumerator SetGroupState(bool isState)
@@ -156,7 +163,6 @@ public class CastleUI : MonoBehaviour
 
                 Vector3 newPosition = isState ? new Vector3(i * offcet.x, offcet.y - offcet.y * offcetY, 0) : Vector3.zero;
                 uiItems[index].transform.DOLocalMove(newPosition, time).OnComplete(() => canvasGroup.interactable = isState); ;
-                //Debug.Log($"Is State - {isState} | Time - {time}");
             }
         }
 

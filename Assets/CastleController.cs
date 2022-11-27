@@ -25,6 +25,11 @@ public class CastleController : MonoBehaviour
     private Coroutine clearCoroutine;
 
     [Header("View Settings")]
+    [SerializeField] private Color playerColor = new Color(76f / 255f, 129f / 255f, 237f / 255f, 255f / 255f);
+    [SerializeField] private Color enemyColor = new Color(237f / 255f, 76f / 255f, 76f / 255f, 255f / 255f);
+    public Color PlayerColor=> playerColor;
+    public Color EnemyColor=> enemyColor;
+
     [SerializeField] private CastleUI castleUI;
     [SerializeField] private float cooldownTime = 0.25f;
 
@@ -51,16 +56,32 @@ public class CastleController : MonoBehaviour
         currentMoney -= value;
     }
 
-    public bool CheckCreateList(BaseUnit unit)
+    private int maxWaitingCount = 3;
+    private List<UnitData> creationWaitingList = new List<UnitData>();
+    private void Update()
+    {
+        if (creationWaitingList.Count == 0)
+            return;
+
+        if (!createProgress || creationWaitingList.Count == 0)
+            CheckBeforeCreating(creationWaitingList[0]);
+    }
+
+    #region Create
+    public bool CheckCreateList(UnitData unit)
     {
         if (unit == null)
             return false;
 
+        if (creationWaitingList.Count >= maxWaitingCount)
+            return false;
 
+        creationWaitingList.Add(unit);
         return true;
     }
 
-    public bool CreateUnit(BaseUnit unit)
+    private bool createProgress = false;
+    private bool CheckBeforeCreating(UnitData unitData)
     {
         if (path == null)
             return false;
@@ -71,11 +92,25 @@ public class CastleController : MonoBehaviour
         if (!tempPath)
             return false;
 
-        BaseUnit tempUnit = Instantiate(unit);
-        tempUnit.InitializationUnit(tempDirection, tempPath);
-
+        StartCoroutine(CreatingUnit(unitData, tempDirection, tempPath));
         return true;
     }
+
+    private IEnumerator CreatingUnit(UnitData unitData, BaseUnit.Direction tempDirection, PathPoint tempPath)
+    {
+        createProgress = true;
+        yield return new WaitForSeconds(unitData.createTime);
+        createProgress = false;
+
+        CreateUnit(unitData.unitPrefab, tempDirection, tempPath);
+    }
+
+    private void CreateUnit(BaseUnit unit, BaseUnit.Direction tempDirection, PathPoint tempPath)
+    {
+        BaseUnit tempUnit = Instantiate(unit);
+        tempUnit.InitializationUnit(tempDirection, tempPath);
+    }
+    #endregion
 
     private void OnMouseDown()
     {
