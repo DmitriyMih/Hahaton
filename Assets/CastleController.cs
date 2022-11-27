@@ -8,8 +8,9 @@ public class CastleController : MonoBehaviour
     [SerializeField] private bool isPlayerInteractable = false;
     public bool IsPlayerInteractable => isPlayerInteractable;
 
-    [SerializeField] private Transform castle;
-
+    [Header("Interact Settings")]
+    [SerializeField] private float tapClearTime = 0.5f;
+    private Coroutine clearCoroutine;
 
     [Header("View Settings")]
     [SerializeField] private CastleUI castleUI;
@@ -24,7 +25,10 @@ public class CastleController : MonoBehaviour
             castleUI.Initialization(transform);
     }
 
+    private void CreateUnit()
+    {
 
+    }
 
     private void OnMouseDown()
     {
@@ -36,10 +40,17 @@ public class CastleController : MonoBehaviour
 
         clickIndex += 1;
 
+        if (clearCoroutine != null)
+            StopCoroutine(clearCoroutine);
+        StartCoroutine(ClearInput(tapClearTime));
+
         if (clickIndex == 2)
         {
             castleUI.ChangeState();
             clickIndex = 0;
+
+            if (clearCoroutine != null)
+                StopCoroutine(clearCoroutine);
 
             StartCoroutine(Cooldown(cooldownTime));
         }
@@ -50,5 +61,11 @@ public class CastleController : MonoBehaviour
         isInteractable = false;
         yield return new WaitForSeconds(time);
         isInteractable = true;
+    }
+
+    private IEnumerator ClearInput(float time)
+    {
+        yield return new WaitForSeconds(time);
+        clickIndex = 0;
     }
 }
