@@ -31,13 +31,6 @@ public class CastleController : MonoBehaviour
             castleUI.Initialization(this);
     }
 
-    [SerializeField] private BaseUnit baseUnit;
-    [ContextMenu("Debug Create")]
-    private void DebugCreate()
-    {
-        CreateUnit(baseUnit);
-    }
-
     public int currentMoney = 1000;
     public bool CheckMoneyWithdrawal(int value)
     {
@@ -60,13 +53,11 @@ public class CastleController : MonoBehaviour
         if (!tempPath)
             return false;
 
-        BaseUnit tempUnit = Instantiate(baseUnit);
+        BaseUnit tempUnit = Instantiate(unit);
         tempUnit.InitializationUnit(tempDirection, tempPath);
 
         return true;
     }
-
-
 
     private void OnMouseDown()
     {
