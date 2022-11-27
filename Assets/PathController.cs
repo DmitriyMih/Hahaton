@@ -9,6 +9,7 @@ public class PathController : MonoBehaviour
 
     private void OnEnable()
     {
+        GetPathPoints();
         InitializationPath();
     }
 

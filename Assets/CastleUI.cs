@@ -29,11 +29,11 @@ public class CastleUI : MonoBehaviour
     public void Initialization(CastleController currentCastle)
     {
         objectOnMap = currentCastle.transform;
+        openState = false;
 
         canvasGroup = GetComponent<CanvasGroup>();
         canvasGroup.alpha = 0;
-
-        openState = false;
+        canvasGroup.interactable = openState;
 
         for (int i = 0; i < uiItems.Count; i++)
         {
@@ -113,7 +113,7 @@ public class CastleUI : MonoBehaviour
                 float offcetY = (i == -1 || i == uiItems.Count - 2) ? offcetYCoefficient : 0f;
 
                 Vector3 newPosition = isState ? new Vector3(i * offcet.x, offcet.y - offcet.y * offcetY, 0) : Vector3.zero;
-                uiItems[index].transform.DOLocalMove(newPosition, time);
+                uiItems[index].transform.DOLocalMove(newPosition, time).OnComplete(() => canvasGroup.interactable = isState); ;
                 //Debug.Log($"Is State - {isState} | Time - {time}");
             }
         }

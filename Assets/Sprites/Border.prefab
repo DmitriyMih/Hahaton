@@ -85,6 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5876481619014098903}
   - component: {fileID: 5876481619014098901}
+  - component: {fileID: 279216842910358955}
   - component: {fileID: 5876481619014098900}
   - component: {fileID: 5876481619014098898}
   m_Layer: 5
@@ -122,6 +123,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5876481619014098902}
   m_CullTransparentMesh: 1
+--- !u!114 &279216842910358955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5876481619014098902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbee7292ef629764c9678775b8040133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitData: {fileID: 11400000, guid: e191bc127db5bd74ea8f07dde83df125, type: 2}
+  castleController: {fileID: 0}
+  createButton: {fileID: 5876481619014098898}
 --- !u!114 &5876481619014098900
 MonoBehaviour:
   m_ObjectHideFlags: 0
