@@ -1496,6 +1496,7 @@ GameObject:
   - component: {fileID: 737893831}
   - component: {fileID: 737893830}
   - component: {fileID: 737893832}
+  - component: {fileID: 737893833}
   m_Layer: 5
   m_Name: Castle View
   m_TagString: Untagged
@@ -1576,8 +1577,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 932142129}
-  canvasGroup: {fileID: 0}
-  leftUpGroup: {fileID: 0}
+  canvasGroup: {fileID: 737893833}
   openTime: 0.75
   closedTime: 0.1
   openState: 0
@@ -1589,6 +1589,18 @@ MonoBehaviour:
   - {fileID: 193634818}
   offcet: {x: 125, y: 175}
   offcetYCoefficient: 0.25
+--- !u!225 &737893833
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737893828}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1001 &795740562
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ public class CastleController : MonoBehaviour
     [SerializeField] private CastleUI castleUI;
     [SerializeField] private float cooldownTime = 0.25f;
 
-    private int clickIndex = 0;
+    [SerializeField] private int clickIndex = 0;
     private bool isInteractable = true;
 
     private void Awake()
@@ -33,8 +33,8 @@ public class CastleController : MonoBehaviour
             return;
 
         clickIndex += 1;
-        
-        if (clickIndex==2)
+
+        if (clickIndex == 2)
         {
             castleUI.ChangeState();
             clickIndex = 0;

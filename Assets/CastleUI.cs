@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
+[RequireComponent(typeof(CanvasGroup))]
 public class CastleUI : MonoBehaviour
 {
     [SerializeField] private Canvas canvas;
@@ -13,15 +14,7 @@ public class CastleUI : MonoBehaviour
     [SerializeField] private float closedTime = 0.1f;
 
     [SerializeField] private bool openState = false;
-    private bool processing = false;
-
-    public void ChangeState()
-    {
-        if (processing)
-            return;
-
-        SetGroupState(!openState);
-    }
+    [SerializeField] private bool processing = false;
 
     [Header("Main Settings")]
     [SerializeField] private Transform objectOnMap;
@@ -31,15 +24,26 @@ public class CastleUI : MonoBehaviour
 
     [SerializeField] private Vector2 offcet = new Vector2(25f, 50f);
     [SerializeField] private float offcetYCoefficient = 0.5f;
+    [SerializeField] private float dampingValueDifference = 0.2f;
 
     public void Initialization(Transform castlePosition)
     {
         objectOnMap = castlePosition;
-        
-        if (canvasGroup != null)
-            canvasGroup.alpha = 0;
+
+        canvasGroup = GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 0;
 
         openState = false;
+    }
+
+    public void ChangeState()
+    {
+        if (processing)
+            return;
+
+        bool tempState = !openState;
+        //Debug.Log("Change " + tempState);
+        StartCoroutine(SetGroupState(tempState));
     }
 
     [ContextMenu("Debug On Screen")]
@@ -56,8 +60,8 @@ public class CastleUI : MonoBehaviour
         ((ViewportPosition.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f)));
 
         debugImage.rectTransform.anchoredPosition = WorldObject_ScreenPosition;
-
     }
+
     private void Update()
     {
         if (openState)
@@ -94,16 +98,10 @@ public class CastleUI : MonoBehaviour
         float newValue = isState ? 1f : 0f;
 
         if (canvasGroup != null)
-            canvasGroup.DOFade(newValue, time);
+            canvasGroup.DOFade(newValue, time - 0.25f);
 
         if (buttons.Count != 0)
         {
-
-            for (int i = 0; i < buttons.Count; i++)
-            {
-                buttons[i].localPosition = Vector2.zero;
-            }
-
             for (int i = -1; i < buttons.Count - 1; i++)
             {
                 int index = i + 1;
@@ -111,6 +109,7 @@ public class CastleUI : MonoBehaviour
 
                 Vector3 newPosition = isState ? new Vector3(i * offcet.x, offcet.y - offcet.y * offcetY, 0) : Vector3.zero;
                 buttons[index].DOLocalMove(newPosition, time);
+                Debug.Log($"Is State - {isState} | Time - {time}");
             }
         }
 
