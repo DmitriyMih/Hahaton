@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class CastleController : MonoBehaviour
 {
+    [Header("Game Settings")]
+    [SerializeField] private bool isEnemy = true;
+    public bool IsEnemy => isEnemy;
+
     [Header("Connect Settings")]
     [SerializeField] private bool isPlayerInteractable = false;
     public bool IsPlayerInteractable => isPlayerInteractable;
@@ -19,15 +23,37 @@ public class CastleController : MonoBehaviour
     [SerializeField] private int clickIndex = 0;
     private bool isInteractable = true;
 
+    [SerializeField] private PathController path;
+
     private void Awake()
     {
         if (castleUI != null)
             castleUI.Initialization(transform);
     }
 
-    private void CreateUnit()
+    [SerializeField] private BaseUnit baseUnit;
+    [ContextMenu("Debug Create")]
+    private void DebugCreate()
     {
+        CreateUnit(baseUnit);
+    }
 
+    private bool CreateUnit(BaseUnit unit)
+    {
+        if (path == null)
+            return false;
+
+        BaseUnit.Direction tempDirection = IsEnemy ? BaseUnit.Direction.Back : BaseUnit.Direction.Forward;
+        PathPoint tempPath = path.GetStartPathPoint(tempDirection);
+
+        if (!tempPath)
+            return false;
+
+        BaseUnit tempUnit = Instantiate(baseUnit);
+
+        tempUnit.InitializationUnit(tempDirection, tempPath);
+
+        return true;
     }
 
     private void OnMouseDown()

@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4906090894192817581}
+  - component: {fileID: 5088776503924052152}
+  - component: {fileID: 8342286162843588079}
   - component: {fileID: 4524337215399026240}
   - component: {fileID: 2709091156928220892}
   m_Layer: 0
@@ -34,6 +36,69 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5088776503924052152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4906090894192817580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73f1a7426efe74647b04f4e83e30fddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  brakingSpeed: 1
+  accelerationSpeed: 0.5
+  isAutomatic: 1
+  isMove: 0
+  maxInputValue: 1
+--- !u!114 &8342286162843588079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4906090894192817580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 771ec003370712f4a9ff11f89249b9cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carBody: {fileID: 0}
+  maxSpeed: 10
+  currentSpeed: 0
+  currentPoint: {fileID: 0}
+  nextPoint: {fileID: 0}
+  maxDistanceToNextPoint: 0.1
+  lookRotationTime: 0.2
+  speedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  currentSelectColor: {r: 0.034033775, g: 0, b: 1, a: 1}
+  connectToPoint: 0
+  firstPoint: {x: 3, y: 2.5}
 --- !u!54 &4524337215399026240
 Rigidbody:
   m_ObjectHideFlags: 0

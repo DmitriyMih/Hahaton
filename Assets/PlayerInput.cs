@@ -5,13 +5,13 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour
 {
     [Header("Move Settings")]
-    [SerializeField] private float brakingSpeed = 4;
-    [SerializeField] private float accelerationSpeed = 2;
+    [SerializeField] private float brakingSpeed = 1;
+    [SerializeField] private float accelerationSpeed = 0.5f;
 
-    [SerializeField] public bool isAutomatic = false;
+    [SerializeField] public bool isAutomatic = true;
 
     public float isMove;
-    //[HideInInspector] 
+    [HideInInspector] 
     public float maxInputValue = 1f;
 
     private void Update()

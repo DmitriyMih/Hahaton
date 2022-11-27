@@ -7,6 +7,14 @@ public class PathController : MonoBehaviour
     [SerializeField] private List<PathPoint> pathPoints = new List<PathPoint>();
     [SerializeField] private Transform pathGroup;
 
+    public PathPoint GetStartPathPoint(BaseUnit.Direction direction)
+    {
+        if (pathPoints.Count == 0)
+            return null;
+
+        return direction == BaseUnit.Direction.Back ? pathPoints[pathPoints.Count - 1] : pathPoints[0];
+    }
+
     [ContextMenu("Get Path Points")]
     private void GetPathPoints()
     {

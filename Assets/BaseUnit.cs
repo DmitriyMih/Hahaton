@@ -6,7 +6,14 @@ using DG.Tweening;
 public class BaseUnit : MonoBehaviour
 {
     private bool isEnemy = false;
-   
+
+    private Direction currentDirection = Direction.Forward;
+    public enum Direction
+    {
+        Forward,
+        Back
+    }
+
     [SerializeField] private Transform carBody;
 
     [Space]
@@ -34,14 +41,15 @@ public class BaseUnit : MonoBehaviour
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
-        SetBusToStart();
     }
 
-    [ContextMenu("Set To Start")]
-    private void SetBusToStart()
+    public void InitializationUnit(Direction direction, PathPoint startPoint)
     {
-        if (currentPoint != null)
-            transform.position = currentPoint.transform.position;
+        currentPoint = startPoint;
+        transform.position = currentPoint.transform.position;
+
+        currentDirection = direction;
+        isEnemy = currentDirection == Direction.Back;
 
         if (nextPoint != null)
             nextPoint.ChangeColor(false, Color.white);
@@ -49,7 +57,7 @@ public class BaseUnit : MonoBehaviour
         nextPoint = null;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         //  speed   upgrade
         float speed = maxSpeed;
@@ -111,7 +119,7 @@ public class BaseUnit : MonoBehaviour
 
     private void FindNewPoint(PathPoint point)
     {
-        PathPoint tempPoint = point.CheckNextPoint(this);
+        PathPoint tempPoint = point.CheckNextPoint(this, currentDirection);
 
         if (tempPoint == null)
             return;

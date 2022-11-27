@@ -16,11 +16,9 @@ public class PathPoint : MonoBehaviour
     public bool isPlace = true;
 
     [Header("Debug Settings")]
+    [SerializeField] private Color currentColor;
     [SerializeField] private Color tempPointColor = Color.green;
     [SerializeField] protected float debugRadius = 0.5f;
-
-    [SerializeField] protected Color currentColor;
-    [SerializeField] protected Color currentLineColor = Color.white;
 
     [Header("Connect Settings")]
     public BaseUnit unitController;
@@ -28,17 +26,6 @@ public class PathPoint : MonoBehaviour
     private void OnEnable()
     {
         ChangeColor(false, Color.white);
-    }
-
-    public void SetColor(Color newColor)
-    {
-        tempPointColor = newColor;
-        ChangeColor(false, Color.white);
-    }
-
-    public void SetLineColor(Color newColor)
-    {
-        currentLineColor = newColor;
     }
 
     public void ChangeColor(bool isNew, Color newColor)
@@ -51,24 +38,32 @@ public class PathPoint : MonoBehaviour
         unitController = bus;
     }
 
-    public virtual PathPoint CheckNextPoint(BaseUnit bus)
+    public virtual PathPoint CheckNextPoint(BaseUnit bus, BaseUnit.Direction direction)
     {
-        if (nextPoint != null)
+        switch (direction)
         {
-            return nextPoint;
+            case BaseUnit.Direction.Forward:
+                if (nextPoint != null)
+                    return nextPoint;
+                break;
+
+            case BaseUnit.Direction.Back:
+                if (lastPoint != null)
+                    return lastPoint;
+                break;
         }
-        else
-            return null;
+
+        return null;
     }
 
     protected virtual void OnDrawGizmos()
     {
-        Gizmos.color = nextPoint != null ? currentColor : Color.red;
+        Gizmos.color = nextPoint != null ? Color.green : Color.red;
         Gizmos.DrawSphere(transform.position, debugRadius);
 
         if (nextPoint != null)
         {
-            Gizmos.color = currentLineColor;
+            Gizmos.color = Color.white;
             Gizmos.DrawLine(transform.position, nextPoint.transform.position);
         }
     }
