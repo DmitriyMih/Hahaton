@@ -71,7 +71,7 @@ Material:
     - _RefractionIntensity: 0.15
     - _RefractionScale: 1
     - _Scale: 50
-    - _Smoothness: 0.9
+    - _Smoothness: 0.72
     - _TransAmbient: 0.2
     - _TransDirect: 1
     - _TransNormalDistortion: 0.1
@@ -82,7 +82,7 @@ Material:
     - _UDistancePower: 0.1
     - _WavesNormalIntensity: 0.35
     - _WavesSpeed: 0.1
-    - _WavesTile: 0.1
+    - _WavesTile: 0.9
     - __dirty: 0
     m_Colors:
     - _Color0: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 0}
