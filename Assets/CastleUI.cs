@@ -27,11 +27,14 @@ public class CastleUI : MonoBehaviour
     [SerializeField] private float dampingValueDifference = 0.2f;
 
     [Header("Money View Settings")]
+    [SerializeField] private CanvasGroup moneyGroup;
     [SerializeField] private TextMeshProUGUI moneyText;
+    private int tempHp = -1;
 
     [Header("HP Bar Settings")]
     [SerializeField] private CanvasGroup hpBarGroup;
     [SerializeField] private Image hpFill;
+    private int tempMoney = -1;
 
     public void Initialization(CastleController currentCastle)
     {
@@ -48,15 +51,25 @@ public class CastleUI : MonoBehaviour
         {
             uiItems[i].InititializationButton(currentCastle);
         }
+
+        if (castleController != null)
+        {
+            if (moneyGroup != null)
+            {
+                moneyGroup.alpha = 0f;
+             
+                if (!castleController.IsEnemy)
+                    moneyGroup.DOFade(1f, openTime);
+            }
+        }
     }
 
     public void ChangeState()
     {
-        if (processing)
+        if (processing || castleController == null)
             return;
 
         bool tempState = !openState;
-        //Debug.Log("Change " + tempState);
         StartCoroutine(SetGroupState(tempState));
     }
 
@@ -76,7 +89,6 @@ public class CastleUI : MonoBehaviour
         debugImage.rectTransform.anchoredPosition = WorldObject_ScreenPosition;
     }
 
-    private int tempMoney = -1;
 
     private void Update()
     {
@@ -84,8 +96,22 @@ public class CastleUI : MonoBehaviour
             DebugOnScreen();
 
         if (castleController != null)
+        {
+            if (hpBarGroup != null)
+                if (castleController.CurrentHp != tempHp)
+                    SetHpState(openState);
+
+            if (castleController.IsEnemy)
+                return;
+
             if (castleController.CurrentMoney != tempMoney)
                 UpdateMoney();
+        }
+    }
+
+    private void UpdateHPBar()
+    {
+
     }
 
     private void UpdateMoney()
@@ -93,7 +119,22 @@ public class CastleUI : MonoBehaviour
         if (moneyText == null)
             return;
 
+        tempMoney = castleController.CurrentMoney;
         moneyText.text = castleController.CurrentMoney.ToString();
+    }
+
+    private void SetHpState(bool isState)
+    {
+        float hpBarAlphaValue = isState ? 0f : 1f;
+        float time = isState ? openTime : closedTime;
+
+        tempHp = castleController.CurrentHp;
+
+        if (hpBarGroup != null)
+            if (castleController.CurrentHp != castleController.MaxHp)
+                hpBarGroup.DOFade(hpBarAlphaValue, time - 0.25f);
+            else
+                hpBarGroup.alpha = 0f;
     }
 
     private IEnumerator SetGroupState(bool isState)
@@ -107,10 +148,7 @@ public class CastleUI : MonoBehaviour
         if (canvasGroup != null)
             canvasGroup.DOFade(buttonsAlphaValue, time - 0.25f);
 
-        float hpBarAlphaValue = isState ? 0f : 1f;
-
-        if (hpBarGroup != null)
-            hpBarGroup.DOFade(hpBarAlphaValue, time - 0.25f);
+        SetHpState(isState);
 
         if (uiItems.Count != 0)
         {

@@ -8,6 +8,11 @@ public class CastleController : MonoBehaviour
     [SerializeField] private bool isEnemy = true;
     public bool IsEnemy => isEnemy;
 
+    [SerializeField] private int maxHp = 100;
+    [SerializeField] private int currentHp;
+    public int MaxHp => maxHp;
+    public int CurrentHp => currentHp;
+
     [SerializeField] private int currentMoney = 1000;
     public int CurrentMoney => currentMoney;
 
@@ -30,6 +35,8 @@ public class CastleController : MonoBehaviour
 
     private void Awake()
     {
+        currentHp = maxHp;
+
         if (castleUI != null)
             castleUI.Initialization(this);
     }

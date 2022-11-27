@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b130c00521be16d499af652ffce6a3e7, type: 3}
-  m_Name: Archer
+  m_Name: Horse
   m_EditorClassIdentifier: 
-  unitPrefab: {fileID: 8342286162843588079, guid: ce6023e73d720d04193427275adc8b55, type: 3}
-  cost: 2
+  unitPrefab: {fileID: 8342286162843588079, guid: b0fe0f6d8a77792419f2bef3ea74b695, type: 3}
+  cost: 3
   createTime: 0
