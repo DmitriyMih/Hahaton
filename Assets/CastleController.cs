@@ -51,6 +51,15 @@ public class CastleController : MonoBehaviour
         currentMoney -= value;
     }
 
+    public bool CheckCreateList(BaseUnit unit)
+    {
+        if (unit == null)
+            return false;
+
+
+        return true;
+    }
+
     public bool CreateUnit(BaseUnit unit)
     {
         if (path == null)

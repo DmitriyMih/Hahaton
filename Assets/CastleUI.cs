@@ -34,6 +34,8 @@ public class CastleUI : MonoBehaviour
     [Header("HP Bar Settings")]
     [SerializeField] private CanvasGroup hpBarGroup;
     [SerializeField] private Image hpFill;
+    [SerializeField] private Color playerColor = new Color(76f / 255f, 129f / 255f, 237f / 255f, 255f / 255f);
+    [SerializeField] private Color enemyColor = new Color(237f / 255f, 76f / 255f, 76f / 255f, 255f / 255f);
     private int tempMoney = -1;
 
     public void Initialization(CastleController currentCastle)
@@ -107,11 +109,6 @@ public class CastleUI : MonoBehaviour
             if (castleController.CurrentMoney != tempMoney)
                 UpdateMoney();
         }
-    }
-
-    private void UpdateHPBar()
-    {
-
     }
 
     private void UpdateMoney()
