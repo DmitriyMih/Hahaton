@@ -10,12 +10,19 @@ public class CastleController : MonoBehaviour
 
     [SerializeField] private Transform castle;
 
+
     [Header("View Settings")]
     [SerializeField] private CastleUI castleUI;
     [SerializeField] private float cooldownTime = 0.25f;
 
     private int clickIndex = 0;
     private bool isInteractable = true;
+
+    private void Awake()
+    {
+        if (castleUI != null)
+            castleUI.Initialization(transform);
+    }
 
     private void OnMouseDown()
     {
