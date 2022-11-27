@@ -28,7 +28,7 @@ public class CastleController : MonoBehaviour
     private void Awake()
     {
         if (castleUI != null)
-            castleUI.Initialization(transform);
+            castleUI.Initialization(this);
     }
 
     [SerializeField] private BaseUnit baseUnit;
@@ -38,7 +38,18 @@ public class CastleController : MonoBehaviour
         CreateUnit(baseUnit);
     }
 
-    private bool CreateUnit(BaseUnit unit)
+    public int currentMoney = 1000;
+    public bool CheckMoneyWithdrawal(int value)
+    {
+        return currentMoney - value > 0;
+    }
+
+    public void WriteOffMoney(int value)
+    {
+        currentMoney -= value;
+    }
+
+    public bool CreateUnit(BaseUnit unit)
     {
         if (path == null)
             return false;
@@ -54,6 +65,8 @@ public class CastleController : MonoBehaviour
 
         return true;
     }
+
+
 
     private void OnMouseDown()
     {

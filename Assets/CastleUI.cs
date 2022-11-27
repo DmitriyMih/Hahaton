@@ -20,20 +20,25 @@ public class CastleUI : MonoBehaviour
     [SerializeField] private Transform objectOnMap;
     [SerializeField] private Image debugImage;
 
-    [SerializeField] private List<Button> buttons = new List<Button>();
+    [SerializeField] private List<CastleUiItem> uiItems = new List<CastleUiItem>();
 
     [SerializeField] private Vector2 offcet = new Vector2(25f, 50f);
     [SerializeField] private float offcetYCoefficient = 0.5f;
     [SerializeField] private float dampingValueDifference = 0.2f;
 
-    public void Initialization(Transform castlePosition)
+    public void Initialization(CastleController currentCastle)
     {
-        objectOnMap = castlePosition;
+        objectOnMap = currentCastle.transform;
 
         canvasGroup = GetComponent<CanvasGroup>();
         canvasGroup.alpha = 0;
 
         openState = false;
+
+        for (int i = 0; i < uiItems.Count; i++)
+        {
+            uiItems[i].InititializationButton(currentCastle);
+        }
     }
 
     public void ChangeState()
@@ -71,21 +76,21 @@ public class CastleUI : MonoBehaviour
     [ContextMenu("Place In Group")]
     private void PlaceImageInGroup()
     {
-        if (buttons.Count == 0)
+        if (uiItems.Count == 0)
             return;
 
-        for (int i = 0; i < buttons.Count; i++)
+        for (int i = 0; i < uiItems.Count; i++)
         {
-            buttons[i].transform.localPosition = Vector2.zero;
+            uiItems[i].transform.localPosition = Vector2.zero;
         }
 
-        for (int i = -1; i < buttons.Count - 1; i++)
+        for (int i = -1; i < uiItems.Count - 1; i++)
         {
             int index = i + 1;
-            float offcetY = (i == -1 || i == buttons.Count - 2) ? offcetYCoefficient : 0f;
+            float offcetY = (i == -1 || i == uiItems.Count - 2) ? offcetYCoefficient : 0f;
 
             Vector3 newPosition = new Vector3(i * offcet.x, offcet.y - offcet.y * offcetY, 0);
-            buttons[index].transform.DOLocalMove(newPosition, openTime);
+            uiItems[index].transform.DOLocalMove(newPosition, openTime);
         }
     }
 
@@ -100,15 +105,15 @@ public class CastleUI : MonoBehaviour
         if (canvasGroup != null)
             canvasGroup.DOFade(newValue, time - 0.25f);
 
-        if (buttons.Count != 0)
+        if (uiItems.Count != 0)
         {
-            for (int i = -1; i < buttons.Count - 1; i++)
+            for (int i = -1; i < uiItems.Count - 1; i++)
             {
                 int index = i + 1;
-                float offcetY = (i == -1 || i == buttons.Count - 2) ? offcetYCoefficient : 0f;
+                float offcetY = (i == -1 || i == uiItems.Count - 2) ? offcetYCoefficient : 0f;
 
                 Vector3 newPosition = isState ? new Vector3(i * offcet.x, offcet.y - offcet.y * offcetY, 0) : Vector3.zero;
-                buttons[index].transform.DOLocalMove(newPosition, time);
+                uiItems[index].transform.DOLocalMove(newPosition, time);
                 //Debug.Log($"Is State - {isState} | Time - {time}");
             }
         }

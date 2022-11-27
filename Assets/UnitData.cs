@@ -2,17 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitData : MonoBehaviour
+[CreateAssetMenu(menuName = "Units", fileName = "Create New Unit Data")]
+public class UnitData
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public BaseUnit unitPrefab;
+    public int cost;
+    public float createTime;
 }
