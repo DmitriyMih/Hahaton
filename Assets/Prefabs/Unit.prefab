@@ -65,8 +65,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771ec003370712f4a9ff11f89249b9cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carBody: {fileID: 0}
-  maxSpeed: 10
+  isEnemy: 0
+  currentDirection: 0
+  maxSpeed: 2
   currentSpeed: 0
   currentPoint: {fileID: 0}
   nextPoint: {fileID: 0}

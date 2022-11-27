@@ -23,22 +23,17 @@ public class PathPoint : MonoBehaviour
     [Header("Connect Settings")]
     public BaseUnit unitController;
 
-    private void OnEnable()
-    {
-        ChangeColor(false, Color.white);
-    }
-
     public void ChangeColor(bool isNew, Color newColor)
     {
         currentColor = isNew ? newColor : tempPointColor;
     }
 
-    public void ChangeCurrentUnit(BaseUnit bus)
+    public void ChangeCurrentUnit(BaseUnit unit)
     {
-        unitController = bus;
+        unitController = unit;
     }
 
-    public virtual PathPoint CheckNextPoint(BaseUnit bus, BaseUnit.Direction direction)
+    public virtual PathPoint CheckNextPoint(BaseUnit unit, BaseUnit.Direction direction)
     {
         switch (direction)
         {

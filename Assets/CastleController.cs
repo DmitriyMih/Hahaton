@@ -50,7 +50,6 @@ public class CastleController : MonoBehaviour
             return false;
 
         BaseUnit tempUnit = Instantiate(baseUnit);
-
         tempUnit.InitializationUnit(tempDirection, tempPath);
 
         return true;

@@ -5,16 +5,14 @@ using DG.Tweening;
 
 public class BaseUnit : MonoBehaviour
 {
-    private bool isEnemy = false;
+    [SerializeField] private bool isEnemy = false;
 
-    private Direction currentDirection = Direction.Forward;
+    [SerializeField] private Direction currentDirection = Direction.Forward;
     public enum Direction
     {
         Forward,
         Back
     }
-
-    [SerializeField] private Transform carBody;
 
     [Space]
     [Header("Move Settings")]
@@ -25,6 +23,7 @@ public class BaseUnit : MonoBehaviour
 
     [SerializeField] private PathPoint currentPoint;
     [SerializeField] private PathPoint nextPoint;
+    [SerializeField] private PathPoint lastPoint => currentPoint;
 
     [SerializeField] private float maxDistanceToNextPoint = 0.1f;
     [SerializeField] private float lookRotationTime = 0.2f;
@@ -121,25 +120,35 @@ public class BaseUnit : MonoBehaviour
     {
         PathPoint tempPoint = point.CheckNextPoint(this, currentDirection);
 
+        if (lastPoint != null)
+            if (lastPoint.unitController == this)
+                lastPoint.ChangeCurrentUnit(null);
+
         if (tempPoint == null)
             return;
         else
         {
             if (tempPoint.unitController != null)
+            {
                 if (tempPoint.unitController != this)
                     return;
+            }
 
             if (nextPoint != null)
             {
-                currentPoint.ChangeCurrentUnit(null);
                 currentPoint.ChangeColor(false, Color.white);
 
+                currentPoint.ChangeCurrentUnit(null);
+
+                //lastPoint = currentPoint;
                 currentPoint = nextPoint;
+
                 currentPoint.ChangeColor(true, currentSelectColor);
             }
 
             nextPoint = tempPoint;
             nextPoint.ChangeCurrentUnit(this);
+
             nextPoint.ChangeColor(true, currentSelectColor);
         }
 
