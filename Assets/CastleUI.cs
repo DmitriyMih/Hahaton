@@ -20,7 +20,7 @@ public class CastleUI : MonoBehaviour
     [SerializeField] private Transform objectOnMap;
     [SerializeField] private Image debugImage;
 
-    [SerializeField] private List<RectTransform> buttons = new List<RectTransform>();
+    [SerializeField] private List<Button> buttons = new List<Button>();
 
     [SerializeField] private Vector2 offcet = new Vector2(25f, 50f);
     [SerializeField] private float offcetYCoefficient = 0.5f;
@@ -76,7 +76,7 @@ public class CastleUI : MonoBehaviour
 
         for (int i = 0; i < buttons.Count; i++)
         {
-            buttons[i].localPosition = Vector2.zero;
+            buttons[i].transform.localPosition = Vector2.zero;
         }
 
         for (int i = -1; i < buttons.Count - 1; i++)
@@ -85,7 +85,7 @@ public class CastleUI : MonoBehaviour
             float offcetY = (i == -1 || i == buttons.Count - 2) ? offcetYCoefficient : 0f;
 
             Vector3 newPosition = new Vector3(i * offcet.x, offcet.y - offcet.y * offcetY, 0);
-            buttons[index].DOLocalMove(newPosition, openTime);
+            buttons[index].transform.DOLocalMove(newPosition, openTime);
         }
     }
 
@@ -108,8 +108,8 @@ public class CastleUI : MonoBehaviour
                 float offcetY = (i == -1 || i == buttons.Count - 2) ? offcetYCoefficient : 0f;
 
                 Vector3 newPosition = isState ? new Vector3(i * offcet.x, offcet.y - offcet.y * offcetY, 0) : Vector3.zero;
-                buttons[index].DOLocalMove(newPosition, time);
-                Debug.Log($"Is State - {isState} | Time - {time}");
+                buttons[index].transform.DOLocalMove(newPosition, time);
+                //Debug.Log($"Is State - {isState} | Time - {time}");
             }
         }
 

@@ -24,6 +24,8 @@ public class CastleController : MonoBehaviour
             castleUI.Initialization(transform);
     }
 
+
+
     private void OnMouseDown()
     {
         if (!isPlayerInteractable || castleUI == null)
