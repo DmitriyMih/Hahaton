@@ -7,24 +7,37 @@ public class PathController : MonoBehaviour
     [SerializeField] private List<PathPoint> pathPoints = new List<PathPoint>();
     [SerializeField] private Transform pathGroup;
 
-    [SerializeField] private LineRenderer lineRenderer;
+    [ContextMenu("Get Path Points")]
     private void GetPathPoints()
     {
         if (pathGroup == null)
             return;
 
+        pathPoints.Clear();
         pathPoints.AddRange(pathGroup.GetComponentsInChildren<PathPoint>());
-        CreatePathLine();
+        SetNewName();
+        InitializationPath();
     }
 
-    private void CreatePathLine()
+    private void SetNewName()
     {
-        if (lineRenderer == null)
+        for (int i = 0; i < pathPoints.Count; i++)
+        {
+            pathPoints[i].name = "Path Point - " + i;
+        }
+    }
+
+    private void InitializationPath()
+    {
+        if (pathPoints.Count < 2)
             return;
 
-        lineRenderer.positionCount = pathPoints.Count;
-
         for (int i = 0; i < pathPoints.Count; i++)
-            lineRenderer.SetPosition(i, new Vector3(pathPoints[i].transform.position.x, pathPoints[i].transform.position.z, pathPoints[i].transform.position.y));
+        {
+            PathPoint tempLast = i > 0 ? pathPoints[i - 1] : null;
+            PathPoint tempNext = i < pathPoints.Count - 1 ? pathPoints[i + 1] : null;
+
+            pathPoints[i].InitializationPoint(tempLast, tempNext);
+        }
     }
 }
