@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitPrefab: {fileID: 8342286162843588079, guid: e41009d3834c754449fb6a6839982655, type: 3}
   cost: 1
-  createTime: 0
+  createTime: 3

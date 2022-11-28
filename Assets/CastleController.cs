@@ -56,8 +56,9 @@ public class CastleController : MonoBehaviour
         currentMoney -= value;
     }
 
-    private int maxWaitingCount = 3;
-    private List<UnitData> creationWaitingList = new List<UnitData>();
+    [Header("Waiting Settings")]
+    [SerializeField] private int maxWaitingCount = 3;
+    [SerializeField] private List<UnitData> creationWaitingList = new List<UnitData>();
     private void Update()
     {
         if (creationWaitingList.Count == 0)
@@ -66,7 +67,6 @@ public class CastleController : MonoBehaviour
         if (!createProgress || creationWaitingList.Count == 0)
             CheckBeforeCreating(creationWaitingList[0]);
     }
-
     #region Create
     public bool CheckCreateList(UnitData unit)
     {
@@ -103,6 +103,7 @@ public class CastleController : MonoBehaviour
         createProgress = false;
 
         CreateUnit(unitData.unitPrefab, tempDirection, tempPath);
+        creationWaitingList.RemoveAt(0);
     }
 
     private void CreateUnit(BaseUnit unit, BaseUnit.Direction tempDirection, PathPoint tempPath)
